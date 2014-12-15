@@ -38,10 +38,32 @@ function scene:create( event )
 	-- }	
 	-- buttonEnterLevel.x = display.contentCenterX 
 	-- buttonEnterLevel.y = display.contentCenterY - 300
-	local sceneTitle = display.newText("Game1", display.contentCenterX, display.contentCenterY - 200, native.SystemFont, 72)
-
+	-- local sceneTitle = display.newText("Game1", display.contentCenterX, display.contentCenterY - 200, native.SystemFont, 72)
+	local bg = display.newRect(display.contentCenterX, display.contentCenterY, display.contentWidth, display.contentHeight)
+	puck = display.newCircle(100, 100, 100)
+	puck:setFillColor(1, 0, 0)
+	local centerPanel = display.newImage("img/iPhone-6-Center-Panel-Design.png", display.contentCenterX, display.contentCenterY)
 	-- sceneGroup:insert(buttonEnterLevel)
-	sceneGroup:insert(sceneTitle)
+	-- sceneGroup:insert(sceneTitle)
+	sceneGroup:insert(bg)
+	sceneGroup:insert(centerPanel)
+	sceneGroup:insert(puck)
+	function puck:touch( event )
+	    if event.phase == "began" then
+		
+	        self.markX = self.x    -- store x location of object
+	        self.markY = self.y    -- store y location of object
+		
+	    elseif event.phase == "moved" then
+		
+	        local x = (event.x - event.xStart) + self.markX
+	        local y = (event.y - event.yStart) + self.markY
+	        
+	        self.x, self.y = x, y    -- move object based on calculations above
+	    end
+	    
+	    return true
+	end
 end
 
 function scene:show( event )
@@ -56,6 +78,8 @@ function scene:show( event )
 		-- 
 		-- INSERT code here to make the scene come alive
 		-- e.g. start timers, begin animation, play audio, etc.
+		puck:addEventListener( "touch", puckTouchListener )
+
 	end	
 end
 
