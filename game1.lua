@@ -4,15 +4,17 @@ local widget = require("widget")
 local scene = composer.newScene(game1)
 
 ---------------------------------------------------------------------------------
+local function handleStart( event )
 
--- local function handleEnterLevelBtnEvent( event )
-
---     if ( "ended" == event.phase ) then
---         print( "Play was pressed and released" )
---         composer.gotoScene("scene1", "slideRight", 800)
---     end
--- end
-
+    if ( "ended" == event.phase ) then
+        print( "starting game1" )
+        buttonStart:removeSelf();
+        bgStartMask:removeSelf();
+        -- composer.gotoScene("scene1", "slideRight", 800)
+		update()
+		update2()
+    end
+end
 
 function scene:create( event )
 	local sceneGroup = self.view
@@ -21,33 +23,15 @@ function scene:create( event )
 	-- 
 	-- INSERT code here to initialize the scene
 	-- e.g. add display objects to 'sceneGroup', add touch listeners, etc.
-	-- local buttonEnterLevel = widget.newButton
-	-- {
-	-- 	label = "Select Level",
-	-- 	fontSize = "72",
-	-- 	onEvent = handleEnterLevelBtnEvent,
-	-- 	emboss = false,
-	-- 	--properties for a rounded rectangle button...
-	-- 	shape="roundedRect",
-	-- 	width = 500,
-	-- 	height = 100,
-	-- 	cornerRadius = 30,
-	-- 	fillColor = { default={ 1, 0, 0, 1 }, over={ 1, 0.1, 0.7, 0.4 } },
-	-- 	strokeColor = { default={ 1, 0.4, 0, 1 }, over={ 0.8, 0.8, 1, 1 } },
-	-- 	strokeWidth = 4
-	-- }	
-	-- buttonEnterLevel.x = display.contentCenterX 
-	-- buttonEnterLevel.y = display.contentCenterY - 300
 	-- local sceneTitle = display.newText("Game1", display.contentCenterX, display.contentCenterY - 200, native.SystemFont, 72)
 	local bg = display.newRect(display.contentCenterX, display.contentCenterY, display.contentWidth, display.contentHeight)
-	puck = display.newCircle(100, 100, 100)
-	puck:setFillColor(1, 0, 0)
 	local centerPanel = display.newImage("img/iPhone-6-Center-Panel-Design.png", display.contentCenterX, display.contentCenterY)
-	-- sceneGroup:insert(buttonEnterLevel)
-	-- sceneGroup:insert(sceneTitle)
-	sceneGroup:insert(bg)
-	sceneGroup:insert(centerPanel)
-	sceneGroup:insert(puck)
+
+-- PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK 
+-- PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK 
+-- PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK 
+ 	puck = display.newCircle(100, 100, 100)
+	puck:setFillColor(1, 0, 0)
 	function puck:touch( event )
 	    if event.phase == "began" then
 		
@@ -64,6 +48,130 @@ function scene:create( event )
 	    
 	    return true
 	end
+-- PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK 
+-- PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK 
+-- PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK PUCK 
+
+	
+-- TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER 
+-- TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER 
+-- TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER 
+-- TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER 
+	local function newArc(startAngle, widthAngle, radius, xPos, yPos, color)
+	    startAngle = startAngle or 0
+	    widthAngle = widthAngle or 90
+	    radius = radius or 100
+	    local vert = {}
+	    vert[#vert+1] = 0 
+	    vert[#vert+1] = 0
+	    
+	    
+	    local minX, minY = 0,0
+	    local initX, initY = radius * math.cos(startAngle), radius * math.sin(startAngle)
+	    if (initX < minX) then minX = initX end
+	    if (initY < minY) then minY = initY end
+	    
+	    for i = 0, widthAngle do
+	        local a = (startAngle+i)*math.pi/180
+	        
+	        local x, y = radius * math.cos(a), radius * math.sin(a)
+	        vert[#vert+1] = x
+	        vert[#vert+1] = y
+	        
+	        if (x < minX) then minX = x end
+	        if (y < minY) then minY = y end
+	    end
+	    
+	    local arc = display.newPolygon(xPos + minX, yPos + minY, vert)
+	    arc.anchorX, arc.anchorY = 0, 0
+	    arc:setFillColor(color[1],color[2],color[3])
+	   
+	    return arc
+	end
+
+	local startAngle = 270
+	local curAngle = 360
+	local radius = 40
+	local buffer = 5
+	local color1, color2 = {0,0,.8}, {0.4,0.4,.8}
+	local xPos, yPos = display.contentCenterX*1.75, display.contentCenterY*1.75
+	local arc1 = newArc(startAngle,curAngle,radius+buffer,xPos,yPos,color1);
+	-- local arc2 = newArc(startAngle,curAngle,radius,xPos,yPos,color2);
+
+	function update()
+	    curAngle = curAngle - 1
+	    -- if (curAngle == 0) then 
+	    -- 	curAngle = 360; 
+	    -- 	print('done'); 
+	    -- end
+	    arc1:removeSelf();
+	    -- arc2:removeSelf();
+	    arc1 = newArc(startAngle,curAngle,radius+buffer,xPos,yPos,color1);
+	    -- arc2 = newArc(startAngle,curAngle,radius,xPos,yPos,color2);
+		-- arc1.xScale = -1
+		-- arc1.x, arc1.y = display.contentCenterX*1.75, display.contentCenterY*1.75
+		-- arc2.xScale = -1
+		sceneGroup:insert(arc1)
+		-- sceneGroup:insert(arc2)
+
+ 		-- timer.performWithDelay(88, update)
+ 		if curAngle >= 0 then
+ 			timer.performWithDelay(10, update)
+ 		end
+ 		print (curAngle); -- for debuggin purposes
+	end
+	timerText = display.newText("burp" ,100, 180, native.systemFont, 22)
+	timerText:setTextColor(1, 1, 0 )
+
+	local countdown = 10
+	function update2()
+		timerText.text = countdown
+		countdown = countdown - 1
+		timer.performWithDelay(1000, update2)
+		print (countdown)
+	end
+
+
+
+-- TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER 
+-- TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER 
+-- TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER 
+-- TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER TIMER 
+
+
+	buttonStart = widget.newButton
+	{
+		label = "Start",
+		fontSize = "72",
+		onEvent = handleStart,
+		emboss = false,
+		--properties for a rounded rectangle button...
+		shape="circle",
+		radius = 100,
+		fillColor = { default={ 1, 0, 0, 1 }, over={ 1, 0.1, 0.7, 0.4 } },
+		strokeColor = { default={ 1, 0.4, 0, 1 }, over={ 0.8, 0.8, 1, 1 } },
+		strokeWidth = 4
+	}	
+	buttonStart.x = display.contentCenterX 
+	buttonStart.y = display.contentCenterY
+
+	bgStartMask = display.newRect(display.contentCenterX, display.contentCenterY, display.contentWidth, display.contentHeight)
+	bgStartMask:setFillColor(0, 0, 0, 0.9)
+
+	sceneGroup:insert(bg)
+	sceneGroup:insert(centerPanel)
+	sceneGroup:insert(puck)
+
+	sceneGroup:insert(arc1)
+	sceneGroup:insert(timerText)
+	-- sceneGroup:insert(arc2)
+
+	sceneGroup:insert(bgStartMask)
+	sceneGroup:insert(buttonStart)
+
+
+
+
 end
 
 function scene:show( event )
@@ -80,7 +188,7 @@ function scene:show( event )
 		-- e.g. start timers, begin animation, play audio, etc.
 		puck:addEventListener( "touch", puckTouchListener )
 
-	end	
+	end		
 end
 
 function scene:hide( event )
